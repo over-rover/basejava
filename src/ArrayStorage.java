@@ -19,23 +19,23 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        // Запись while (!storage[i].uuid.equals(uuid) && storage[i] != null) приводила к исключению при достижении
+        /*// Запись while (!storage[i].uuid.equals(uuid) && storage[i] != null) приводила к исключению при достижении
         // null, так как значение строки сравнивалось с пустотой. Поменял местами условия
         int i = 0;
         while (storage[i] != null && !storage[i].uuid.equals(uuid)) {
             i++;
         }
-        return storage[i];
+        return storage[i];*/
 
-        /* // Резервный способ. Пока мучился с while нарисовался этот вариант
+        // Резервный способ. Пока мучился с while нарисовался этот вариант
         for (int i = 0; i < size; i++) {
             if (storage[i].uuid.equals(uuid)) return storage[i];
         }
-        return null;*/
+        return null;
     }
 
     void delete(String uuid) {
-        int i = 0;
+        /*int i = 0;
         while (storage[i] != null && !uuid.equals(storage[i].uuid)) {
             i++;
         }
@@ -46,8 +46,18 @@ public class ArrayStorage {
             size--;
         } else {
             System.out.println("Указанное значение не найдено. Проверьте правильность ввода");
+        }*/
+        int i;
+        for (i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
+                storage[i] = storage[size-1];
+                storage[size-1] = null;
+                size--;
+                i--; // обрабатываем частный случай, когда удаляется резюме, расположенное последним.
+                break;
+            }
         }
-
+        if (storage[i] == null) System.out.println("Указанное значение не найдено. Проверьте правильность ввода");
     }
 
     /**

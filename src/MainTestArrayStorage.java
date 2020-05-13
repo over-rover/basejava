@@ -20,11 +20,12 @@ public class MainTestArrayStorage {
         System.out.println("Size: " + ARRAY_STORAGE.size());
 
         System.out.println("Get dummy: " + ARRAY_STORAGE.get("dummy"));
+        System.out.println("Delete dummy: ");
+        ARRAY_STORAGE.delete("dummy");
 
         printAll();
-        ARRAY_STORAGE.delete(r1.uuid);
+        ARRAY_STORAGE.delete(r3.uuid);
         printAll();
-        //ARRAY_STORAGE.delete("dummy");
         ARRAY_STORAGE.clear();
         printAll();
 
