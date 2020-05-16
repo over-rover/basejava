@@ -7,7 +7,8 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private int storageLength = 10000;
+    private Resume[] storage = new Resume[storageLength];
     private int size; // полезный размер массива
 
 
@@ -21,6 +22,9 @@ public class ArrayStorage {
         if ( i == -1) {
             storage[size] = r;
             size++;
+            if (size == storageLength) {
+                System.out.println("Attention!!! storage[] is full");
+            }
         } else {
             System.out.println("SAVE ERROR: Resume already exists");
         }
