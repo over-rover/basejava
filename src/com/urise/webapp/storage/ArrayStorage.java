@@ -1,6 +1,7 @@
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 /**
@@ -19,20 +20,18 @@ public class ArrayStorage {
 
     public void save(Resume r) {
         int index = findResumeIndex(r.getUuid());
-        if ( index >= 0) {
+        if (index >= 0) {
             System.out.println("SAVE ERROR: Resume already exists");
-        } else {
-            if (size == storageLength) {
-                System.out.println("Attention!!! storage[] is full");
-            }
-            storage[size] = r;
-            size++;
-            }
+        } else if (size == storageLength - 1) {
+            System.out.println("Attention!!! storage[] is full");
+        }
+        storage[size] = r;
+        size++;
     }
 
     public void update(Resume r) {
         int index = findResumeIndex(r.getUuid());
-        if ( index == -1) {
+        if (index == -1) {
             System.out.println("UPDATE ERROR: Resume doesn't exist");
         } else {
             storage[index] = r;
@@ -50,11 +49,11 @@ public class ArrayStorage {
 
     public void delete(String uuid) {
         int index = findResumeIndex(uuid);
-        if ( index == -1) {
+        if (index == -1) {
             System.out.println("DELETE ERROR: Resume doesn't exist");
-            } else {
-            storage[index] = storage[size-1];
-            storage[size-1] = null;
+        } else {
+            storage[index] = storage[size - 1];
+            storage[size - 1] = null;
             size--;
         }
     }
