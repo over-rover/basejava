@@ -19,14 +19,14 @@ public class ArrayStorage {
     }
 
     public void save(Resume r) {
-        int index = findResumeIndex(r.getUuid());
-        if (index >= 0) {
+        if (findResumeIndex(r.getUuid()) >= 0) {
             System.out.println("SAVE ERROR: Resume already exists");
-        } else if (size == storageLength - 1) {
-            System.out.println("Attention!!! storage[] is full");
+        } else if (size == storageLength) {
+            System.out.println("Error!!! storage[] overflow");
+        } else {
+            storage[size] = r;
+            size++;
         }
-        storage[size] = r;
-        size++;
     }
 
     public void update(Resume r) {
