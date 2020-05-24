@@ -7,9 +7,9 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage {
-    private int storageLength = 10000;
-    private Resume[] storage = new Resume[storageLength];
+public class ArrayStorage implements Storage {
+    private static final int STORAGE_LIMIT= 10000;
+    private Resume[] storage = new Resume[STORAGE_LIMIT];
     private int size; // полезный размер массива
 
 
@@ -21,7 +21,7 @@ public class ArrayStorage {
     public void save(Resume r) {
         if (findResumeIndex(r.getUuid()) >= 0) {
             System.out.println("SAVE ERROR: Resume already exists");
-        } else if (size == storageLength) {
+        } else if (size == STORAGE_LIMIT) {
             System.out.println("Error!!! storage[] overflow");
         } else {
             storage[size] = r;
@@ -74,6 +74,11 @@ public class ArrayStorage {
             if (storage[index].getUuid().equals(uuid)) {
                 return index;
             }
+            /**
+             * В уроке 3 используется запись:
+             * if (uuid == storage[index].getUuid())
+             * То есть сверяются адреса ссылок, но не содержимое объектов. Это корректно?
+             * */
         }
         return -1;
     }
