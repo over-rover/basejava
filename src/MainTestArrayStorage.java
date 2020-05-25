@@ -2,12 +2,13 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.ArrayStorage;
 import com.urise.webapp.storage.Storage;
 
-/**
- * Test for your com.urise.webapp.storage.ArrayStorage implementation
- */
 public class MainTestArrayStorage {
     private static final Storage ARRAY_STORAGE = new ArrayStorage();
 
+    /* а в чем будет разница, если создать такой объект:
+    * private static final ArrayStorage ARRAY_STORAGE = new ArrayStorage() ?
+    * Видимо тогда из SortedArrayStorage не получить доступ к свойствам/методам ARRAY_STORAGE?
+    */
     public static void main(String[] args) {
         final Resume r1 = new Resume();
         r1.setUuid("uuid1");

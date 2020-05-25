@@ -5,32 +5,6 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    @Override
-    public void clear() {
-
-    }
-
-    @Override
-    public void save(Resume r) {
-
-    }
-
-    @Override
-    public void update(Resume r) {
-
-    }
-
-    @Override
-    public void delete(String uuid) {
-
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
-    }
-
-    @Override
     protected int findResumeIndex(String uuid) {
         Resume searchKey = new Resume();
         searchKey.setUuid(uuid);
@@ -41,4 +15,13 @@ public class SortedArrayStorage extends AbstractArrayStorage {
          * присваивать ему uuid
          */
     }
+
+    /* В ДЗ сказано: В SortedArrayStorage ХРАНИТЕ элементы отсортированными.
+     * То есть нужно в классе SortedArrayStorage создать Resume[] sortedStorage = new Resume[size] ?
+     * Кабы не указание "хранить в SortedArrayStorage", я бы попробовал сортировать и
+     * изменять storage[size] - как-то логичнее кажется.
+     *
+     * Собственно теперь по сортировке. Как можно понять, что строка "uuid1" меньше "uuid23"?
+     * split() на строку и число,а потом сравнивать числа 1 и 23?
+     * */
 }
