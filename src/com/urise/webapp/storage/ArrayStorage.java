@@ -7,12 +7,7 @@ import java.util.Arrays;
 /**
  * Array based storage for Resumes
  */
-public class ArrayStorage implements Storage {
-    private static final int STORAGE_LIMIT= 10000;
-    private Resume[] storage = new Resume[STORAGE_LIMIT];
-    private int size; // полезный размер массива
-
-
+public class ArrayStorage extends AbstractArrayStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
@@ -38,15 +33,6 @@ public class ArrayStorage implements Storage {
         }
     }
 
-    public Resume get(String uuid) {
-        int index = findResumeIndex(uuid);
-        if (index == -1) {
-            System.out.print("GET ERROR: Resume doesn't exist \t");
-            return null;
-        }
-        return storage[index];
-    }
-
     public void delete(String uuid) {
         int index = findResumeIndex(uuid);
         if (index == -1) {
@@ -65,20 +51,16 @@ public class ArrayStorage implements Storage {
         return Arrays.copyOf(storage, size);
     }
 
-    public int size() {
-        return size;
-    }
-
-    private int findResumeIndex(String uuid) {
+    protected int findResumeIndex(String uuid) {
         for (int index = 0; index < size; index++) {
             if (storage[index].getUuid().equals(uuid)) {
                 return index;
             }
-            /**
+            /*
              * В уроке 3 используется запись:
              * if (uuid == storage[index].getUuid())
              * То есть сверяются адреса ссылок, но не содержимое объектов. Это корректно?
-             * */
+             */
         }
         return -1;
     }
