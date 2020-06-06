@@ -9,16 +9,17 @@ public abstract class AbstractArrayStorage implements Storage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size; // полезный размер массива
 
-        public void save(Resume r) {
-        /*if (getIndex(r.getUuid()) >= 0) {
+    public void save(Resume r) {
+        int index = getIndex(r.getUuid());
+        // может вернуть от [-(0+1) до -(10000+1)] если элемент не найден
+        // или от [0 до (10000-1)], если элемент есть в массиве
+        if (index >= 0) {
             System.out.println("SAVE ERROR: Resume already exists");
         } else if (size == STORAGE_LIMIT) {
             System.out.println("Error!!! storage[] overflow");
         } else {
             insert(r);
-        }*/
-
-            insert(r);
+        }
     }
 
     public void update(Resume r) {
@@ -27,6 +28,7 @@ public abstract class AbstractArrayStorage implements Storage {
             System.out.println("UPDATE ERROR: Resume doesn't exist");
         } else {
             storage[index] = r;
+            System.out.println("UPDATE is successful");
         }
     }
 
@@ -48,9 +50,7 @@ public abstract class AbstractArrayStorage implements Storage {
         if (index < 0) {
             System.out.println("DELETE ERROR: Resume doesn't exist");
         } else {
-            storage[index] = storage[size - 1];
-            storage[size - 1] = null;
-            size--;
+            extract(index);
         }
     }
 
@@ -66,4 +66,6 @@ public abstract class AbstractArrayStorage implements Storage {
     protected abstract int getIndex(String uuid);
 
     protected abstract void insert(Resume r);
+
+    protected abstract void extract(int index);
 }
