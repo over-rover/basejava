@@ -8,9 +8,10 @@ public abstract class AbstractArrayStorage implements Storage {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size; // полезный размер массива
+    protected int index;
 
     public void save(Resume r) {
-        int index = getIndex(r.getUuid());
+        index = getIndex(r.getUuid());
         // может вернуть от [-(0+1) до -(10000+1)] если элемент не найден
         // или от [0 до (10000-1)], если элемент есть в массиве
         if (index >= 0) {
@@ -18,12 +19,14 @@ public abstract class AbstractArrayStorage implements Storage {
         } else if (size == STORAGE_LIMIT) {
             System.out.println("Error!!! storage[] overflow");
         } else {
+            // index равен -(точка_вставки + 1) для бинарного поиска и -1 для поиска перебором.
             insert(r);
+            size++;
         }
     }
 
     public void update(Resume r) {
-        int index = getIndex(r.getUuid());
+        index = getIndex(r.getUuid());
         if (index < 0) {
             System.out.println("UPDATE ERROR: Resume doesn't exist");
         } else {
@@ -33,7 +36,7 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public Resume get(String uuid) {
-        int index = getIndex(uuid);
+        index = getIndex(uuid);
         if (index < 0) {
             System.out.print("GET ERROR: Resume doesn't exist \t");
             return null;
@@ -46,11 +49,13 @@ public abstract class AbstractArrayStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        int index = getIndex(uuid);
+        index = getIndex(uuid);
         if (index < 0) {
             System.out.println("DELETE ERROR: Resume doesn't exist");
         } else {
-            extract(index);
+            remove(index);
+            storage[size - 1] = null;
+            size--;
         }
     }
 
@@ -63,9 +68,9 @@ public abstract class AbstractArrayStorage implements Storage {
         return size;
     }
 
-    protected abstract int getIndex(String uuid);
+    abstract int getIndex(String uuid);
 
-    protected abstract void insert(Resume r);
+    abstract void insert(Resume r);
 
-    protected abstract void extract(int index);
+    abstract void remove(int index);
 }
