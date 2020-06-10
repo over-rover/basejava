@@ -14,12 +14,9 @@ public class ArrayStorage extends AbstractArrayStorage {
 
     protected void insert(Resume r) {
         storage[size] = r;
-        size++;
     }
 
-    protected void extract(int index) {
+    protected void remove(int index) {
         storage[index] = storage[size - 1];
-        storage[size - 1] = null;
-        size--;
     }
 }
