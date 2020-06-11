@@ -15,7 +15,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected void insert(Resume r) {
         // проверка на возможное переполнение произведена в save().
         index = -(index + 1); // точка вставки резюме
-        System.arraycopy(storage, index, storage, index + 1, size + 1 - index);
+        System.arraycopy(storage, index, storage, index + 1, size - index);
         storage[index] = r;
     }
 
