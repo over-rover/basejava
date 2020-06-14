@@ -1,12 +1,24 @@
 package com.urise.webapp.model;
 
+import java.util.UUID;
+
 /**
  * Initial resume class
  */
 public class Resume implements Comparable<Resume> {
 
     // Unique identifier
-    private String uuid;
+    private final String uuid;
+
+    // При создании незполненного объекта задаем uuid по-умолчанию (случайным образом) и
+    // вызываем следующий конструктор. Так можно создать целый набор.
+    public Resume() {
+        this(UUID.randomUUID().toString());
+    }
+    // задаем указанный uuid для резюме
+    public Resume(String uuid) {
+        this.uuid = uuid;
+    }
 
     public String getUuid() {
         return uuid;
@@ -30,10 +42,6 @@ public class Resume implements Comparable<Resume> {
     @Override
     public int hashCode() {
         return uuid.hashCode();
-    }
-
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
     }
 
     @Override
