@@ -7,34 +7,36 @@ import java.lang.reflect.Method;
 
 public class MainReflection {
     public static void main(String[] args) throws IllegalAccessException, NoSuchMethodException {
-        Resume r = new Resume();
+        Resume r = new Resume("uuid1111");
         Field field = r.getClass().getDeclaredFields()[0];
         field.setAccessible(true);
-        System.out.println(field.getName());
+        System.out.println("Поле называется: " + field.getName());
 
         field.get(r);
-        // метод get(r) вызывает Unhandled Exception. Решаем проблему самым простым образом -
-        // бросаем Throw. Idea подсказывает.
-        System.out.println(r);
+        // метод get(r) может вызвать Unhandled Exception. Решаем проблему самым простым образом -
+        // бросаем Throw. Idea подсказывает IllegalAccessException.
+        System.out.println("Его значение: " + r);
 
-        field.set(r, "changed_uuid");
-        System.out.println(r);
+        field.set(r, "uuid2222");
+        System.out.println("Заменили поле uuid значением: " + r);
 
         // выводим все поля класса
         Field[] fields = r.getClass().getDeclaredFields();
         for(Field i : fields) {
-            System.out.println("Поле: " + i);
+            System.out.println("Список всех полей класса: " + i);
         }
 
         // выводим все методы класса
+        // Idea заставляет предупредить о NoSuchMethodException
         Method[] methods = r.getClass().getDeclaredMethods();
         for(Method i : methods) {
-            System.out.println("Метод: " + i);
+            System.out.println("Список всех методов класса: " + i);
         }
 
         // выводим метод toString()
         Method method = r.getClass().getDeclaredMethod("toString");
-        // Idea еще одно исключение нарисовала
         System.out.println("method toString() " + method);
+
+        System.out.println("method toString() " + methods[1]);
     }
 }
