@@ -6,9 +6,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-
 import static org.junit.Assert.*;
 
 public class AbstractArrayStorageTest {
@@ -25,7 +22,7 @@ public class AbstractArrayStorageTest {
         storage.save(new Resume(UUID_2));
         storage.save(new Resume(UUID_3));
         sizeExpected = 3;
-        // мы предположили, что методы clear() save() работают корректно?
+        // предполагаем, что методы clear() save() работают корректно.
     }
 
     @Test
@@ -48,6 +45,15 @@ public class AbstractArrayStorageTest {
 
     @Test
     public void getAll() {
+        Assert.assertEquals(sizeExpected,storage.size());
+        Resume[] storageCopy = storage.getAll();
+        assertEquals(storage.get(UUID_1), storageCopy[0]);
+        assertEquals(storage.get(UUID_2), storageCopy[1]);
+        assertEquals(storage.get(UUID_3), storageCopy[2]);
+        // Тест не проходит при записи uuid вида: uuid3, uuid8, uuid23.
+        // Однако проходит при uuid03, uuid08, uuid23
+        // Причина, скорее всего в Arrays.copyOf(). Я посмотрел реализацию - ничерта не понятно. Но
+        // там используется метод Math.min() - может он не использует лексикографического сравнения?
     }
 
     @Test
@@ -58,33 +64,6 @@ public class AbstractArrayStorageTest {
     public void clearAssertSizeIsNull() {
         storage.clear();
         assertEquals("must return 0", 0, storage.size());
-    }
-
-    @Test // проверим, что после обнуления массива его элементы становятся null
-    public void clearAssertNullElements() {
-        // тестируем метод storage.clear();
-        // Для этого нам нужно получить доступ к элементам storage[0...size-1] и в цикле сравнить их с null
-        // Однако, прямого доступа к storage[] нет. Имеется только getAll(), но я не уверен, что
-        // он отрабатывает корректо. Предпочтительнее использовать рефлексию.
-        // Но не получается, так как исследую объект класса SortedArrayStorage, а поля
-        // и методы Родителя этот объект не показывает - к ним тоже нужно как-то подобраться.
-        // По какому пути идти?
-
-        // выводим все поля класса SortedArrayStorage
-        Field[] fields = storage.getClass().getDeclaredFields();
-        for(Field i : fields) {
-            System.out.println("Список всех полей класса: " + i);
-        }
-
-        // выводим все методы класса SortedArrayStorage
-        Method[] methods = storage.getClass().getDeclaredMethods();
-        for(Method i : methods) {
-            System.out.println("Список всех методов класса: " + i);
-        }
-
-        // Родитель
-        System.out.println("Superclass: " + storage.getClass().getSuperclass());
-
     }
 
     @Test
