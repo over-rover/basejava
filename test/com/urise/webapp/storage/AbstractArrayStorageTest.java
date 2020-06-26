@@ -9,51 +9,44 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-    public abstract class AbstractArrayStorageTest {
-    //public class AbstractArrayStorageTest {
-    // Поясни, пожалуйста, почему джава ругается без модификатора abstract?
+public abstract class AbstractArrayStorageTest {
     private Storage storage;
     private static final String UUID_1 = "uuid3";
     private static final String UUID_2 = "uuid5";
     private static final String UUID_3 = "uuid8";
-    Resume r1, r2, r3;
+    private Resume r1 = new Resume(UUID_1);
+    private Resume r2 = new Resume(UUID_2);
+    private Resume r3 = new Resume(UUID_3);
+    private int initSize;
 
 
-    public AbstractArrayStorageTest(Storage storage){
+    public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
-    /* логично было бы, чтобы у объекта SortedArrayStorage элементы были отсортированы
-    (uuid3, uuid5, uuid8), а у ArrayStorage шли в произвольном порядке. В текущем варианте
-    нужно ручками корректировать порядок uuid-ов в зависимости от получаемого объекта.
-    Как-то не очень.
-    */
 
     @Before
     public void setUp() {
         storage.clear();
-        r1 = new Resume(UUID_1);
-        r2 = new Resume(UUID_2);
-        r3 = new Resume(UUID_3);
         storage.save(r1);
         storage.save(r2);
         storage.save(r3);
+        initSize = 3;
     }
 
     @Test
-    public void testSave() {
+    public void saveTest() {
         Resume r4 = new Resume("uuid7");
         storage.save(r4);
-        assertEquals(r4, storage.get("uuid7"));
+        assertEquals(initSize + 1, storage.size());
     }
 
     @Test
-    public void testSaveThrowsExceptionForStorageOverflow() {
+    public void saveThrowsExceptionForStorageOverflowTest() {
         try {
             while (storage.size() <= AbstractArrayStorage.STORAGE_LIMIT) {
                 storage.save(new Resume());
             }
-        }
-        catch (StorageException e) {
+        } catch (StorageException e) {
             if (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
                 fail("ВНИМАНИЕ!!! Исключение брошено, хотя массив еще не переполнен. Тест не пройден");
             } else {
@@ -62,11 +55,13 @@ import static org.junit.Assert.*;
             }
         }
     }
-    // AbstractArrayStorage.STORAGE_LIMIT имеет модификатор protected.
-    // Мы же не должны его видеть отсюда?
+    /*
+     AbstractArrayStorage.STORAGE_LIMIT имеет модификатор protected.
+     Думал, что из тестовых классов можно увидеть только public поля/методы
+    */
 
     @Test
-    public void update() {
+    public void updateTest() {
         r1 = new Resume(UUID_1);
         storage.update(r1);
         assertEquals(r1, storage.get(UUID_1));
@@ -74,26 +69,26 @@ import static org.junit.Assert.*;
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testUpdateThrowsExceptionNotExists() {
+    public void updateThrowsExceptionNotExistsTest() {
         Resume r4 = new Resume();
         storage.update(r4);
     }
 
     @Test
-    public void get() {
+    public void getTest() {
         assertEquals(r1, storage.get(UUID_1));
         assertEquals(r2, storage.get(UUID_2));
         assertEquals(r3, storage.get(UUID_3));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testGetThrowsExceptionNotExists() {
+    public void getThrowsExceptionNotExistsTest() {
         storage.get("dummy");
     }
 
     @Test
-    public void getAll() {
-        Assert.assertEquals(3,storage.size());
+    public void getAllTest() {
+        Assert.assertEquals(initSize, storage.size());
         Resume[] storageCopy = storage.getAll();
         assertEquals(storage.get(UUID_1), storageCopy[0]);
         assertEquals(storage.get(UUID_2), storageCopy[1]);
@@ -101,32 +96,34 @@ import static org.junit.Assert.*;
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void delete() {
+    public void deleteTest() {
         storage.delete(UUID_2);
-        assertEquals(2, storage.size());
+        assertEquals(initSize - 1, storage.size());
         storage.get(UUID_2);
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void testDeleteThrowsExceptionNotExists() {
+    public void deleteThrowsExceptionNotExistsTest() {
         storage.delete("dummy");
     }
 
-    @Test // проверим, что после обнуления массива size == 0
-    public void clearAssertSizeIsNull() {
+    @Test
+    public void clearSizeIsNullTest() {
         storage.clear();
         assertEquals("must return 0", 0, storage.size());
     }
 
     @Test
-    public void size() {
-        assertEquals(3,storage.size());
+    public void sizeTest() {
+        assertEquals(initSize, storage.size());
     }
 
     /*@Test
-    public void testGetIndex() {
+    public void getIndexTest() {
         assertEquals(0, ge);
     }*/
-    // Методы getIndex(), insert(), remove() протестировать не получается -
-    // их почему-то не видно ни отсюда, ни из наследника.
+    /*
+     Абстрактные методы getIndex(), insert(), remove() протестировать не получается -
+     их не видно из тестовых классов.
+    */
 }
