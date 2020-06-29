@@ -19,7 +19,6 @@ public abstract class AbstractArrayStorageTest {
     private Resume r3 = new Resume(UUID_3);
     private int initSize;
 
-
     public AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
     }
@@ -30,7 +29,7 @@ public abstract class AbstractArrayStorageTest {
         storage.save(r1);
         storage.save(r2);
         storage.save(r3);
-        initSize = 3;
+        initSize = storage.size(); // Предложено вместо initSize = 3; В таком случае нужно менять saveTest()
     }
 
     @Test
@@ -38,22 +37,19 @@ public abstract class AbstractArrayStorageTest {
         Resume r4 = new Resume("uuid7");
         storage.save(r4);
         assertEquals(initSize + 1, storage.size());
+        assertEquals(r4, storage.get(r4.getUuid()));
     }
 
-    @Test
+    @Test(expected = StorageException.class)
     public void saveThrowsExceptionForStorageOverflowTest() {
         try {
-            while (storage.size() <= AbstractArrayStorage.STORAGE_LIMIT) {
+            while (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
                 storage.save(new Resume());
             }
         } catch (StorageException e) {
-            if (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
-                fail("ВНИМАНИЕ!!! Исключение брошено, хотя массив еще не переполнен. Тест не пройден");
-            } else {
-                System.out.println("Резюме " + e.getUuid() + " вызвало переполнение массива. " +
-                        "Брошено исключение. Тест пройден.");
-            }
+            fail("ВНИМАНИЕ!!! Исключение брошено, хотя массив еще не переполнен. Тест не пройден");
         }
+        storage.save(new Resume());
     }
     /*
      AbstractArrayStorage.STORAGE_LIMIT имеет модификатор protected.
@@ -86,13 +82,23 @@ public abstract class AbstractArrayStorageTest {
         storage.get("dummy");
     }
 
+    /* Комментарий ментора к getAllTest(): "в getAllTest проверяй массивы целиком"
+     *  Суть комментария непонятна.
+     *  Имеется виду необходимость использовать метод assertArrayEquals?
+     *  Если да, то какие массивы сравнивать?
+     *  Очевидно что сравнение assertArrayEquals(storage.getAll, resumesCopy) смысла не имеет,
+     *  так как тест всегда будет успешным.
+     *  Предположу, что требуется реализовать assertArrayEquals(массивИсходныхРезюме, getAll).
+     *  */
     @Test
     public void getAllTest() {
-        Assert.assertEquals(initSize, storage.size());
-        Resume[] storageCopy = storage.getAll();
-        assertEquals(storage.get(UUID_1), storageCopy[0]);
-        assertEquals(storage.get(UUID_2), storageCopy[1]);
-        assertEquals(storage.get(UUID_3), storageCopy[2]);
+        Resume[] getAllFromStorage = storage.getAll();
+        Assert.assertEquals(storage.size(), getAllFromStorage.length);
+        /*assertEquals(storage.get(UUID_1), resumesCopy[0]);
+        assertEquals(storage.get(UUID_2), resumesCopy[1]);
+        assertEquals(storage.get(UUID_3), resumesCopy[2]);*/
+        Resume[] resumes = {r1, r2, r3};
+        assertArrayEquals(resumes, storage.getAll());
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -115,7 +121,7 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void sizeTest() {
-        assertEquals(initSize, storage.size());
+        assertEquals(3, storage.size());
     }
 
     /*@Test
