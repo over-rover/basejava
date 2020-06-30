@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +28,7 @@ public abstract class AbstractArrayStorageTest {
         storage.save(r1);
         storage.save(r2);
         storage.save(r3);
-        initSize = storage.size(); // Предложено вместо initSize = 3; В таком случае нужно менять saveTest()
+        initSize = 3;
     }
 
     @Test
@@ -51,17 +50,11 @@ public abstract class AbstractArrayStorageTest {
         }
         storage.save(new Resume());
     }
-    /*
-     AbstractArrayStorage.STORAGE_LIMIT имеет модификатор protected.
-     Думал, что из тестовых классов можно увидеть только public поля/методы
-    */
 
     @Test
     public void updateTest() {
-        r1 = new Resume(UUID_1);
-        storage.update(r1);
+        storage.update(new Resume(UUID_1));
         assertEquals(r1, storage.get(UUID_1));
-        //не знаю как проверить, т.к. update ничего не обновляет.
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -82,23 +75,10 @@ public abstract class AbstractArrayStorageTest {
         storage.get("dummy");
     }
 
-    /* Комментарий ментора к getAllTest(): "в getAllTest проверяй массивы целиком"
-     *  Суть комментария непонятна.
-     *  Имеется виду необходимость использовать метод assertArrayEquals?
-     *  Если да, то какие массивы сравнивать?
-     *  Очевидно что сравнение assertArrayEquals(storage.getAll, resumesCopy) смысла не имеет,
-     *  так как тест всегда будет успешным.
-     *  Предположу, что требуется реализовать assertArrayEquals(массивИсходныхРезюме, getAll).
-     *  */
     @Test
     public void getAllTest() {
-        Resume[] getAllFromStorage = storage.getAll();
-        Assert.assertEquals(storage.size(), getAllFromStorage.length);
-        /*assertEquals(storage.get(UUID_1), resumesCopy[0]);
-        assertEquals(storage.get(UUID_2), resumesCopy[1]);
-        assertEquals(storage.get(UUID_3), resumesCopy[2]);*/
-        Resume[] resumes = {r1, r2, r3};
-        assertArrayEquals(resumes, storage.getAll());
+        Resume[] expectedResumes = {r1, r2, r3};
+        assertArrayEquals(expectedResumes, storage.getAll());
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -121,15 +101,6 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void sizeTest() {
-        assertEquals(3, storage.size());
+        assertEquals(initSize, storage.size());
     }
-
-    /*@Test
-    public void getIndexTest() {
-        assertEquals(0, ge);
-    }*/
-    /*
-     Абстрактные методы getIndex(), insert(), remove() протестировать не получается -
-     их не видно из тестовых классов.
-    */
 }
