@@ -18,7 +18,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         storage[index] = r;
     }
 
-    protected void remove(int index) {
+    protected void remove() {
         System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
     }
 }
