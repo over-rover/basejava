@@ -6,33 +6,40 @@ import com.urise.webapp.model.Resume;
 
 
 public abstract class AbstractStorage implements Storage {
-    protected int index;
 
     public void save(Resume r) {
-        index = getIndex(r.getUuid());
+        int index = getIndex(r.getUuid());
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
-        } else {
-            saveResume(r);
         }
+        saveResume(r, index);
     }
 
     public void update(Resume r) {
-        index = getIndex(r.getUuid());
+        int index = getIndex(r.getUuid());
         if (index < 0) {
             throw new NotExistStorageException(r.getUuid());
-        } else {
-            updateResume(r);
-            System.out.println("UPDATE is successful");
         }
+        updateResume(r, index);
+        System.out.println("UPDATE is successful");
+        /*"а почему сообщение только к методу Update написано? А к другим методам?"
+        * изменения, производимые другими методами, отслеживаются в main() выводом на экран.
+        * Метод update() у нас неполноценный до тех пор, пока не будут введены поля помимо
+        * final String uuid. uuid- это единственное поле класса, а обновить его невозможно.
+        * То есть, на данном этапе это сообщение несет минимальный функионал, показывая, что мы
+        * как-то отработали в методе update(). Оно уберется.
+        * В общем же, подтверждения типа "успешно сохранено, обновлено, добавлено и т.д"
+        * обязательно должны выводиться пользователю. Но такой задачи не ставилось.
+        * Сообщение prnintln("Операция выполнена успешно") вывести не проблема. Есть ли смысл?
+        * */
     }
 
     public Resume get(String uuid) {
-        index = getIndex(uuid);
+        int index = getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
         }
-        return getResume();
+        return getResume(index);
     }
 
     public Resume[] getAll() {
@@ -40,12 +47,11 @@ public abstract class AbstractStorage implements Storage {
     }
 
     public void delete(String uuid) {
-        index = getIndex(uuid);
+        int index = getIndex(uuid);
         if (index < 0) {
             throw new NotExistStorageException(uuid);
-        } else {
-            deleteResume();
         }
+        deleteResume(index);
     }
 
     public void clear() {
@@ -54,15 +60,15 @@ public abstract class AbstractStorage implements Storage {
 
     abstract void deleteAll();
 
-    abstract void deleteResume();
+    abstract void deleteResume(int index);
 
     abstract Resume[] getAllResumes();
 
     abstract int getIndex(String uuid);
 
-    abstract Resume getResume();
+    abstract Resume getResume(int index);
 
-    abstract void saveResume(Resume r);
+    abstract void saveResume(Resume r, int index);
 
-    abstract void updateResume(Resume r);
+    abstract void updateResume(Resume r, int index);
 }

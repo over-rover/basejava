@@ -11,14 +11,14 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
-    protected void insert(Resume r) {
+    protected void insert(Resume r, int index) {
         // проверка на возможное переполнение произведена в save().
         index = -(index + 1); // точка вставки резюме
         System.arraycopy(storage, index, storage, index + 1, size - index);
         storage[index] = r;
     }
 
-    protected void remove() {
+    protected void remove(int index) {
         System.arraycopy(storage, index + 1, storage, index, size - 1 - index);
     }
 }

@@ -2,6 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+
 import java.util.Arrays;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -9,21 +10,19 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size; // полезный размер массива
 
-    public void saveResume(Resume r) {
+    public void saveResume(Resume r, int index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("storage[] overflow!", r.getUuid());
-        } else {
-            // index равен -(точка_вставки + 1) для бинарного поиска и -1 для поиска перебором.
-            insert(r);
-            size++;
         }
+        insert(r, index);
+        size++;
     }
 
-    public void updateResume(Resume r) {
+    public void updateResume(Resume r, int index) {
         storage[index] = r;
     }
 
-    public Resume getResume() {
+    public Resume getResume(int index) {
         return storage[index];
     }
 
@@ -31,8 +30,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return Arrays.copyOf(storage, size);
     }
 
-    public void deleteResume() {
-        remove();
+    public void deleteResume(int index) {
+        remove(index);
         storage[size - 1] = null;
         size--;
     }
@@ -48,7 +47,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     abstract int getIndex(String uuid);
 
-    abstract void insert(Resume r);
+    abstract void insert(Resume r, int index);
 
-    abstract void remove();
+    abstract void remove(int index);
 }
