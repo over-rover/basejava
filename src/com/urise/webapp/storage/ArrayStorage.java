@@ -4,6 +4,7 @@ import com.urise.webapp.model.Resume;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
+    @Override
     protected Object getKey(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
@@ -13,11 +14,13 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    protected void insert(Resume r, Object searchKey) {
+    @Override
+    protected void insert(Resume r, int searchKey) {
         storage[size] = r;
     }
 
-    protected void remove(Object searchKey) {
-        storage[(int) searchKey] = storage[size - 1];
+    @Override
+    protected void remove(int searchKey) {
+        storage[searchKey] = storage[size - 1];
     }
 }

@@ -4,53 +4,53 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
-
 public abstract class AbstractStorage implements Storage {
 
+    @Override
     public void save(Resume r) {
-        Object searchKey = getKey(r.getUuid());
-        checkIfResumeExist(r.getUuid(), searchKey);
+        Object searchKey = getKeyAndThrowExceptionIfResumeExist(r.getUuid());
         saveResume(r, searchKey);
     }
 
+    @Override
     public void update(Resume r) {
-        Object searchKey = getKey(r.getUuid());
-        checkIfResumeNotExist(r.getUuid(), searchKey);
+        Object searchKey = getKeyAndThrowExceptionIfResumeNotExist(r.getUuid());
         updateResume(r, searchKey);
         System.out.println("UPDATE is successful");
     }
 
+    @Override
     public Resume get(String uuid) {
-        Object searchKey = getKey(uuid);
-        checkIfResumeNotExist(uuid, searchKey);
+        Object searchKey = getKeyAndThrowExceptionIfResumeNotExist(uuid);
         return getResume(searchKey);
     }
 
+    @Override
     public Resume[] getAll() {
         return getAllResumes();
     }
 
+    @Override
     public void delete(String uuid) {
-        Object searchKey = getKey(uuid);
-        checkIfResumeNotExist(uuid, searchKey);
+        Object searchKey = getKeyAndThrowExceptionIfResumeNotExist(uuid);
         deleteResume(searchKey);
     }
 
+    @Override
     public void clear() {
         deleteAll();
     }
 
-    private void checkIfResumeExist(String uuid, Object searchKey) {
-        if ((searchKey instanceof Integer && (int) searchKey >= 0) ||
-                searchKey instanceof String) {
-            throw new ExistStorageException(uuid);
-        }
+    private Object getKeyAndThrowExceptionIfResumeExist(String uuid) {
+        Object searchKey = getKey(uuid);
+        if (isExist(searchKey)) throw new ExistStorageException(uuid);
+        return searchKey;
     }
 
-    private void checkIfResumeNotExist(String uuid, Object searchKey) {
-        if ((searchKey instanceof Integer && (int) searchKey < 0) || searchKey == null) {
-            throw new NotExistStorageException(uuid);
-        }
+    private Object getKeyAndThrowExceptionIfResumeNotExist(String uuid) {
+        Object searchKey = getKey(uuid);
+        if (!isExist(searchKey)) throw new NotExistStorageException(uuid);
+        return searchKey;
     }
 
     abstract void deleteAll();
@@ -62,6 +62,8 @@ public abstract class AbstractStorage implements Storage {
     abstract Object getKey(String uuid);
 
     abstract Resume getResume(Object searchKey);
+
+    abstract boolean isExist(Object searchKey);
 
     abstract void saveResume(Resume r, Object searchKey);
 

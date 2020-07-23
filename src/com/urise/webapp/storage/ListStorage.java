@@ -8,10 +8,6 @@ import java.util.List;
 public class ListStorage extends AbstractStorage {
     protected List<Resume> storage = new ArrayList<>();
 
-    public int size() {
-        return storage.size();
-    }
-
     @Override
     public void deleteAll() {
         storage.clear();
@@ -45,8 +41,18 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey >= 0;
+    }
+
+    @Override
     public void saveResume(Resume r, Object searchKey) {
         storage.add(r);
+    }
+
+    @Override
+    public int size() {
+        return storage.size();
     }
 
     @Override
