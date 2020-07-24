@@ -1,38 +1,27 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 import static org.junit.Assert.*;
 
-public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
-    protected AbstractArrayStorageTest(Storage storage) {
-        super(storage);
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveThrowsExceptionForStorageOverflowTest() {
-        try {
-            while (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            fail("ВНИМАНИЕ!!! Исключение брошено, хотя массив еще не переполнен. Тест не пройден");
-        }
-        storage.save(new Resume());
-    }
-/*    private Storage storage;
-    private static final String UUID_3 = "uuid8";
+public abstract class AbstractStorageTest {
+    protected Storage storage;
     private static final String UUID_1 = "uuid3";
     private static final String UUID_2 = "uuid5";
+    private static final String UUID_3 = "uuid8";
     private static final String UUID_4 = "uuid9";
     private Resume r1 = new Resume(UUID_1);
     private Resume r2 = new Resume(UUID_2);
     private Resume r3 = new Resume(UUID_3);
     private int initSize;
 
-    protected AbstractArrayStorageTest(Storage storage) {
+    protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
@@ -51,18 +40,6 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
         storage.save(r4);
         assertSize(initSize + 1);
         assertGet(r4);
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveThrowsExceptionForStorageOverflowTest() {
-        try {
-            while (storage.size() < AbstractArrayStorage.STORAGE_LIMIT) {
-                storage.save(new Resume());
-            }
-        } catch (StorageException e) {
-            fail("ВНИМАНИЕ!!! Исключение брошено, хотя массив еще не переполнен. Тест не пройден");
-        }
-        storage.save(new Resume());
     }
 
     @Test
@@ -92,7 +69,9 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
     @Test
     public void getAllTest() {
         Resume[] expectedResumes = {r1, r2, r3};
-        assertArrayEquals(expectedResumes, storage.getAll());
+        Resume[] actualResumes = storage.getAll();
+        Arrays.sort(actualResumes);
+        assertArrayEquals(expectedResumes, actualResumes);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -124,5 +103,5 @@ public abstract class AbstractArrayStorageTest extends AbstractStorageTest {
 
     private void assertGet(Resume r) {
         assertEquals(r, storage.get(r.getUuid()));
-    }*/
+    }
 }
