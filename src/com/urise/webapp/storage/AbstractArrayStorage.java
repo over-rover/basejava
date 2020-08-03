@@ -11,7 +11,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected int size; // полезный размер массива
 
     @Override
-    public void deleteAll() {
+    public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
     }
@@ -24,12 +24,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAllResumes() {
+    public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
     }
 
     @Override
-    public Resume getResume(Object searchKey) {
+    protected Resume getResume(Object searchKey) {
         return storage[(int) searchKey];
     }
 
@@ -38,7 +38,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void saveResume(Resume r, Object searchKey) {
+    protected void saveResume(Resume r, Object searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("storage[] overflow!", r.getUuid());
         }
@@ -52,11 +52,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void updateResume(Resume r, Object searchKey) {
+    protected void updateResume(Resume r, Object searchKey) {
         storage[(int) searchKey] = r;
     }
 
-    abstract void insert(Resume r, int searchKey);
+    protected abstract void insert(Resume r, int searchKey);
 
-    abstract void remove(int searchKey);
+    protected abstract void remove(int searchKey);
 }

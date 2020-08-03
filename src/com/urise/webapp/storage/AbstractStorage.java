@@ -14,31 +14,21 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void update(Resume r) {
-        Object searchKey = getKeyAndThrowExceptionIfResumeNotExist(r.getUuid());
+        Object searchKey = getSearchKey(r.getUuid());
         updateResume(r, searchKey);
         System.out.println("UPDATE is successful");
     }
 
     @Override
     public Resume get(String uuid) {
-        Object searchKey = getKeyAndThrowExceptionIfResumeNotExist(uuid);
+        Object searchKey = getSearchKey(uuid);
         return getResume(searchKey);
     }
 
     @Override
-    public Resume[] getAll() {
-        return getAllResumes();
-    }
-
-    @Override
     public void delete(String uuid) {
-        Object searchKey = getKeyAndThrowExceptionIfResumeNotExist(uuid);
+        Object searchKey = getSearchKey(uuid);
         deleteResume(searchKey);
-    }
-
-    @Override
-    public void clear() {
-        deleteAll();
     }
 
     private Object getKeyAndThrowExceptionIfResumeExist(String uuid) {
@@ -47,25 +37,27 @@ public abstract class AbstractStorage implements Storage {
         return searchKey;
     }
 
-    private Object getKeyAndThrowExceptionIfResumeNotExist(String uuid) {
+    private Object getSearchKey(String uuid) {
         Object searchKey = getKey(uuid);
         if (!isExist(searchKey)) throw new NotExistStorageException(uuid);
         return searchKey;
     }
 
-    abstract void deleteAll();
+    @Override
+    public abstract void clear();
 
     abstract void deleteResume(Object searchKey);
 
-    abstract Resume[] getAllResumes();
+    @Override
+    public abstract Resume[] getAll();
 
-    abstract Object getKey(String uuid);
+    protected abstract Object getKey(String uuid);
 
-    abstract Resume getResume(Object searchKey);
+    protected abstract Resume getResume(Object searchKey);
 
-    abstract boolean isExist(Object searchKey);
+    protected abstract boolean isExist(Object searchKey);
 
-    abstract void saveResume(Resume r, Object searchKey);
+    protected abstract void saveResume(Resume r, Object searchKey);
 
-    abstract void updateResume(Resume r, Object searchKey);
+    protected abstract void updateResume(Resume r, Object searchKey);
 }

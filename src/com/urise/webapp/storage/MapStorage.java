@@ -3,7 +3,6 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,38 +10,37 @@ public class MapStorage extends AbstractStorage {
     protected Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public void deleteAll() {
+    public void clear() {
         storage.clear();
     }
 
     @Override
-    void deleteResume(Object searchKey) {
+    protected void deleteResume(Object searchKey) {
         storage.remove(searchKey.toString());
     }
 
     @Override
-    Resume[] getAllResumes() {
-        Collection<Resume> resumes = storage.values();
-        return resumes.toArray(new Resume[0]);
+    public Resume[] getAll() {
+        return storage.values().toArray(new Resume[0]);
     }
 
     @Override
-    Object getKey(String uuid) {
+    protected Object getKey(String uuid) {
         return uuid;
     }
 
     @Override
-    Resume getResume(Object searchKey) {
+    protected Resume getResume(Object searchKey) {
         return storage.get(searchKey.toString());
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return storage.get(searchKey.toString()) != null;
+        return storage.containsKey(searchKey.toString());
     }
 
     @Override
-    void saveResume(Resume r, Object searchKey) {
+    protected void saveResume(Resume r, Object searchKey) {
         storage.put(searchKey.toString(), r);
     }
 
@@ -52,7 +50,7 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    void updateResume(Resume r, Object searchKey) {
+    protected void updateResume(Resume r, Object searchKey) {
         storage.replace(searchKey.toString(), r);
     }
 }

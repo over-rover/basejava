@@ -50,8 +50,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void updateThrowsExceptionNotExistsTest() {
-        Resume r4 = new Resume();
-        storage.update(r4);
+        storage.update(new Resume());
     }
 
     @Test

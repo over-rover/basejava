@@ -15,8 +15,10 @@ public class MainTestArrayStorage {
         final Resume r2 = new Resume("uuid14");
         final Resume r3 = new Resume("uuid16");
 
+        System.out.println("Size: " + ARRAY_STORAGE.size());
         ARRAY_STORAGE.save(r1);
         System.out.println("Size: " + ARRAY_STORAGE.size());
+        System.out.println("Get r1: " + ARRAY_STORAGE.get(r1.getUuid()));
         ARRAY_STORAGE.save(r2);
         System.out.println("Size: " + ARRAY_STORAGE.size());
         ARRAY_STORAGE.save(r3);
@@ -64,7 +66,7 @@ public class MainTestArrayStorage {
         }
         System.out.println();*/
 
-       /* for (ARRAY_STORAGE.Entry<String, Resume> entry : ARRAY_STORAGE.entrySet()) {
+/*        for (ARRAY_STORAGE.Entry<String, Resume> entry : ARRAY_STORAGE.entrySet()) {
             System.out.println(entry.getValue());
         }*/
     }
