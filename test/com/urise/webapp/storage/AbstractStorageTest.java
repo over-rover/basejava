@@ -1,5 +1,6 @@
 package com.urise.webapp.storage;
 
+import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
@@ -42,6 +43,11 @@ public abstract class AbstractStorageTest {
         assertGet(r4);
     }
 
+    @Test(expected = ExistStorageException.class)
+    public void shouldThrowExceptionOnSaveIfResumeExistsTest() {
+        storage.save(r1);
+    }
+
     @Test
     public void updateTest() {
         storage.update(new Resume(UUID_1));
@@ -49,7 +55,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void updateThrowsExceptionNotExistsTest() {
+    public void shouldThrowExceptionOnUpdateIfResumeNotExistsTest() {
         storage.update(new Resume());
     }
 
@@ -61,7 +67,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void getThrowsExceptionNotExistsTest() {
+    public void shouldThrowExceptionOnGetIfResumeNotExistsTest() {
         storage.get("dummy");
     }
 
@@ -81,7 +87,7 @@ public abstract class AbstractStorageTest {
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void deleteThrowsExceptionNotExistsTest() {
+    public void shouldThrowExceptionOnDeleteIfResumeNotExistsTest() {
         storage.delete("dummy");
     }
 
@@ -96,8 +102,8 @@ public abstract class AbstractStorageTest {
         assertEquals(initSize, storage.size());
     }
 
-    private void assertSize(int size) {
-        assertEquals(size, storage.size());
+    private void assertSize(int expectedSize) {
+        assertEquals(expectedSize, storage.size());
     }
 
     private void assertGet(Resume r) {
