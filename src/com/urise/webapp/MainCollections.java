@@ -49,7 +49,7 @@ public class MainCollections {
         map.put(UUID_3, r3);
         map.put(UUID_4, r4);
 
-        /*Пример направильной итерации в коллекции HashMap*/
+        /*Пример неправильной итерации в коллекции HashMap*/
         for (String uuid : map.keySet()) {
             System.out.println(map.get(uuid));
         }
@@ -62,6 +62,12 @@ public class MainCollections {
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
+
+        /*Абсолютно непонятно, что Георгий пытался объяснить, когда ваял этот код на лекции.
+        * Думаю, это можно пропустить и не терять время*/
+        /*List<Resume> resumes = Arrays.asList(r1, r2, r3);
+        resumes.remove(1);
+        System.out.println(resumes);*/
 
     }
 }
