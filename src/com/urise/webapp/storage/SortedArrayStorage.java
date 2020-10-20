@@ -6,18 +6,33 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-
-    @Override
-    protected Object getKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey, new ResumeComparator());
-    }
+    //Пример создания объекта, имплементирующего интерфейс Comparator и передача
+    //данного объекта в binarySearch() в качестве дополнительного параметра.
+    /*private static final ResumeComparator RESUME_COMPARATOR = new ResumeComparator();
 
     private static class ResumeComparator implements Comparator<Resume> {
         @Override
         public int compare(Resume o1, Resume o2) {
             return o1.getUuid().compareTo(o2.getUuid());
         }
+    }*/
+
+    //Приведенный выше способ совершенстуем, используя анонимный класс:
+    /*private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
+        @Override
+        public int compare(Resume o1, Resume o2) {
+            return o1.getUuid().compareTo(o2.getUuid());
+        }
+    };*/
+
+    //Модифицируем код с помощью лямбда-выражения
+    private static final Comparator<Resume> RESUME_COMPARATOR =
+            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+
+    @Override
+    protected Object getKey(String uuid) {
+        Resume searchKey = new Resume(uuid);
+        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
 
     @Override

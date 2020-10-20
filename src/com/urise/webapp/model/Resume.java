@@ -9,6 +9,7 @@ public class Resume {
 
     // Unique identifier
     private final String uuid;
+    private String fullName;
 
     // При создании незполненного объекта задаем uuid по-умолчанию (случайным образом) и
     // вызываем следующий конструктор. Так можно создать целый набор.

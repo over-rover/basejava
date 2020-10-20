@@ -11,6 +11,8 @@ public interface Storage {
     Resume get(String uuid);
 
     Resume[] getAll();
+    // Сделать рефакторинг, заменив Resume[] getAll() на
+    // List<Resume> list = getAllSorted();
 
     void delete(String uuid);
 
