@@ -18,11 +18,17 @@ public class ListStorage extends AbstractStorage {
         storage.remove((int) searchKey);
     }
 
-    @Override
+    /*@Override
     public Resume[] getAll() {
         return storage.toArray(new Resume[0]);
-        /*https://javarush.ru/help/13126
-         * https://overcoder.net/q/1896/%D0%BF%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B7%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-arraylist-ltstringgt-%D0%B2-string-%D0%B2-java*/
+    }*/
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> tempList = new ArrayList<Resume>(storage);
+        //Collections.copy(storage, tempList);
+        tempList.sort(RESUME_COMPARATOR);
+        return tempList;
     }
 
     @Override

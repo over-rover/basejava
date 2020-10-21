@@ -2,12 +2,12 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
-import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.*;
 
@@ -71,12 +71,23 @@ public abstract class AbstractStorageTest {
         storage.get("dummy");
     }
 
-    @Test
+    /*@Test
     public void getAllTest() {
         Resume[] expectedResumes = {r1, r2, r3};
         Resume[] actualResumes = storage.getAll();
-        Arrays.sort(actualResumes);
+        //System.out.println(Arrays.toString(actualResumes));
+        //Arrays.sort(actualResumes);
+        //Arrays.sort()
         assertArrayEquals(expectedResumes, actualResumes);
+    }*/
+
+    @Test
+    public void getALLSortedTest() {
+        List<Resume> expectedResumes = new ArrayList<Resume>();
+        expectedResumes.add(r1);
+        expectedResumes.add(r2);
+        expectedResumes.add(r3);
+        assertEquals(expectedResumes, storage.getAllSorted());
     }
 
     @Test(expected = NotExistStorageException.class)

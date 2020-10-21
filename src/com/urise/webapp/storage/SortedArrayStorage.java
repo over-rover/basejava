@@ -2,8 +2,9 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
+import java.util.List;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
     //Пример создания объекта, имплементирующего интерфейс Comparator и передача
@@ -26,8 +27,15 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     };*/
 
     //Модифицируем код с помощью лямбда-выражения
-    private static final Comparator<Resume> RESUME_COMPARATOR =
-            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
+    //данный код перенесен в родительский класс AbstractStorage
+    /*private static final Comparator<Resume> RESUME_COMPARATOR =
+            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());*/
+
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> tempList = new ArrayList<Resume>(Arrays.asList(storage).subList(0, super.size));
+        return tempList;
+    }
 
     @Override
     protected Object getKey(String uuid) {

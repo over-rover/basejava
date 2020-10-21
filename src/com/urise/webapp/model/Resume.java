@@ -6,19 +6,20 @@ import java.util.UUID;
  * Initial resume class
  */
 public class Resume {
-
-    // Unique identifier
     private final String uuid;
     private String fullName;
 
-    // При создании незполненного объекта задаем uuid по-умолчанию (случайным образом) и
-    // вызываем следующий конструктор. Так можно создать целый набор.
     public Resume() {
         this(UUID.randomUUID().toString());
     }
-    // задаем указанный uuid для резюме
+
     public Resume(String uuid) {
         this.uuid = uuid;
+    }
+
+    public Resume(String uuid, String fullName) {
+        this(uuid);
+        this.fullName = fullName;
     }
 
     public String getUuid() {

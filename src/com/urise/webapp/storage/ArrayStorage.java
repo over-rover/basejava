@@ -2,7 +2,17 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class ArrayStorage extends AbstractArrayStorage {
+    @Override
+    public List<Resume> getAllSorted() {
+        List<Resume> tempList = new ArrayList<Resume>(Arrays.asList(storage).subList(0, super.size));
+        tempList.sort(RESUME_COMPARATOR);
+        return tempList;
+    }
 
     @Override
     protected Object getKey(String uuid) {
@@ -23,4 +33,6 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void remove(int searchKey) {
         storage[searchKey] = storage[size - 1];
     }
+
+
 }

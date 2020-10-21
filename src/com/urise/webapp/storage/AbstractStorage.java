@@ -4,7 +4,11 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
+import java.util.Comparator;
+
 public abstract class AbstractStorage implements Storage {
+    protected static final Comparator<Resume> RESUME_COMPARATOR =
+            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
 
     @Override
     public void save(Resume r) {
@@ -43,14 +47,7 @@ public abstract class AbstractStorage implements Storage {
         throw new NotExistStorageException(uuid);
     }
 
-    // Можно удалить, оказывается. То есть абстрактный класс не обязательно должен реализовать все методы интерфейса
-    /*@Override
-    public abstract void clear();*/
-
-    abstract void deleteResume(Object searchKey);
-
-    /*@Override
-    public abstract Resume[] getAll();*/
+    protected abstract void deleteResume(Object searchKey);
 
     protected abstract Object getKey(String uuid);
 

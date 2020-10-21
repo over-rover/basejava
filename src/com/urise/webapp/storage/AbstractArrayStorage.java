@@ -3,7 +3,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.Arrays;
+import java.util.*;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
@@ -23,10 +23,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    @Override
+    //К удалению, поскольку переходим на getAllSorted()
+    /*@Override
     public Resume[] getAll() {
         return Arrays.copyOf(storage, size);
-    }
+    }*/
 
     @Override
     protected Resume getResume(Object searchKey) {
