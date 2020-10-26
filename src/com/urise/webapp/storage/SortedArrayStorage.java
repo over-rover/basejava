@@ -4,43 +4,21 @@ import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-    //Пример создания объекта, имплементирующего интерфейс Comparator и передача
-    //данного объекта в binarySearch() в качестве дополнительного параметра.
-    /*private static final ResumeComparator RESUME_COMPARATOR = new ResumeComparator();
-
-    private static class ResumeComparator implements Comparator<Resume> {
-        @Override
-        public int compare(Resume o1, Resume o2) {
-            return o1.getUuid().compareTo(o2.getUuid());
-        }
-    }*/
-
-    //Приведенный выше способ совершенстуем, используя анонимный класс:
-    /*private static final Comparator<Resume> RESUME_COMPARATOR = new Comparator<Resume>() {
-        @Override
-        public int compare(Resume o1, Resume o2) {
-            return o1.getUuid().compareTo(o2.getUuid());
-        }
-    };*/
-
-    //Модифицируем код с помощью лямбда-выражения
-    //данный код перенесен в родительский класс AbstractStorage
-    /*private static final Comparator<Resume> RESUME_COMPARATOR =
-            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());*/
 
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> tempList = new ArrayList<Resume>(Arrays.asList(storage).subList(0, super.size));
+    protected List<Resume> getAllSortedResumes() {
+        List<Resume> tempList = new ArrayList<>(Arrays.asList(storage).subList(0, super.size));
         return tempList;
     }
 
     @Override
     protected Object getKey(String uuid) {
-        Resume searchKey = new Resume(uuid);
-        return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
+        Resume searchKey = new Resume(uuid, "noMatterName");
+        return Arrays.binarySearch(storage, 0, size, searchKey, BY_UUID_RESUME_COMPARATOR);
     }
 
     @Override
@@ -54,4 +32,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected void remove(int searchKey) {
         System.arraycopy(storage, searchKey + 1, storage, searchKey, size - 1 - searchKey);
     }
+
+    private static final Comparator<Resume> BY_UUID_RESUME_COMPARATOR =
+            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
 }

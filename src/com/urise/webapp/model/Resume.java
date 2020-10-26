@@ -1,36 +1,33 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
 import java.util.UUID;
 
-/**
- * Initial resume class
- */
-public class Resume {
+public class Resume implements Comparable<Resume> {
     private final String uuid;
     private String fullName;
 
-    public Resume() {
-        this(UUID.randomUUID().toString());
-    }
-
-    public Resume(String uuid) {
-        this.uuid = uuid;
-    }
-
     public Resume(String uuid, String fullName) {
-        this(uuid);
+        this.uuid = uuid;
         this.fullName = fullName;
+    }
+
+    public Resume(String fullName) {
+        this(UUID.randomUUID().toString(), fullName);
     }
 
     public String getUuid() {
         return uuid;
     }
 
-    /**
-     * Переопределяем equals()
-     * Смысл переопределения такой: если два разных объекта имеют одинаковый uuid, то они равны.
-     * Теперь вопрос - что за разные объекты такие?
-     */
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,12 +35,18 @@ public class Resume {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid);
+        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
+    }
+
+    @Override
+    public int compareTo(Resume o) {
+        int fullNameCompare = fullName.compareTo(o.getFullName());
+        return fullNameCompare == 0 ? uuid.compareTo(o.getUuid()) : fullNameCompare;
     }
 
     @Override
     public int hashCode() {
-        return uuid.hashCode();
+        return Objects.hash(uuid, fullName);
     }
 
     @Override

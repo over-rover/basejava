@@ -5,8 +5,8 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapStorage extends AbstractStorage {
-    protected Map<String, Resume> storage = new HashMap<>();
+public class MapStorageKeyValue extends AbstractStorage {
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -15,40 +15,34 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(Object searchKey) {
-        storage.remove(searchKey.toString());
+        storage.remove(((Resume) searchKey).getUuid());
     }
 
-    //К удалению, поскольку переходим на getAllSorted()
-    /*@Override
-    public Resume[] getAll() {
-        return storage.values().toArray(new Resume[0]);
-    }*/
-
     @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> tempList = new ArrayList<Resume>(storage.values());
-        tempList.sort(RESUME_COMPARATOR);
+    protected List<Resume> getAllSortedResumes() {
+        List<Resume> tempList = new ArrayList<>(storage.values());
+        Collections.sort(tempList);
         return tempList;
     }
 
     @Override
     protected Object getKey(String uuid) {
-        return uuid;
+        return storage.get(uuid);
     }
 
     @Override
     protected Resume getResume(Object searchKey) {
-        return storage.get(searchKey.toString());
+        return (Resume) searchKey;
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return storage.containsKey(searchKey.toString());
+        return searchKey != null;
     }
 
     @Override
     protected void saveResume(Resume r, Object searchKey) {
-        storage.put(searchKey.toString(), r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
@@ -58,6 +52,6 @@ public class MapStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Resume r, Object searchKey) {
-        storage.replace(searchKey.toString(), r);
+        storage.replace(r.getUuid(), r);
     }
 }

@@ -12,7 +12,10 @@ import java.io.InputStreamReader;
  */
 
 public class MainArray {
-    private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
+    // Класс к удалению,, так как для тестирования используются тестовые классы.
+    // Но рука не поднимается удалять. Вдруг пригодится еще. потом удалю.
+
+    /*private final static ArrayStorage ARRAY_STORAGE = new ArrayStorage();
 
     public static void main(String[] args) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -71,5 +74,5 @@ public class MainArray {
             }
         }
         System.out.println("----------------------------");
-    }
+    }*/
 }

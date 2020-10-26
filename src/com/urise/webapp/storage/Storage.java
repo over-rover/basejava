@@ -12,9 +12,6 @@ public interface Storage {
 
     Resume get(String uuid);
 
-    //К удалению, поскольку переходим на getAllSorted()
-    //Resume[] getAll();
-
     List<Resume> getAllSorted();
 
     void delete(String uuid);

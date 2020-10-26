@@ -17,10 +17,10 @@ public class MainReflection {
         field.get(r);
         // метод get(r) может вызвать Unhandled Exception. Решаем проблему самым простым образом -
         // бросаем Throw. Idea подсказывает IllegalAccessException.
-        System.out.println("Его значение: " + r);
+//        System.out.println("Его значение: " + r);
 
         field.set(r, "uuid2222");
-        System.out.println("Заменили поле uuid значением: " + r);
+//        System.out.println("Заменили поле uuid значением: " + r);
 
         // выводим все поля класса
         Field[] fields = resumeClass.getDeclaredFields();

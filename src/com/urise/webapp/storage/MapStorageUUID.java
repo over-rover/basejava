@@ -1,13 +1,12 @@
+
 package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class ListStorage extends AbstractStorage {
-    private List<Resume> storage = new ArrayList<>();
+public class MapStorageUUID extends AbstractStorage {
+    private Map<String, Resume> storage = new HashMap<>();
 
     @Override
     public void clear() {
@@ -16,39 +15,34 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void deleteResume(Object searchKey) {
-        storage.remove((int) searchKey);
+        storage.remove(searchKey.toString());
     }
 
     @Override
     protected List<Resume> getAllSortedResumes() {
-        List<Resume> tempList = new ArrayList<>(storage);
+        List<Resume> tempList = new ArrayList<>(storage.values());
         Collections.sort(tempList);
         return tempList;
     }
 
     @Override
     protected Object getKey(String uuid) {
-        for (Resume r : storage) {
-            if (r.getUuid().equals(uuid)) {
-                return storage.indexOf(r);
-            }
-        }
-        return -1;
+        return uuid;
     }
 
     @Override
     protected Resume getResume(Object searchKey) {
-        return storage.get((int) searchKey);
+        return storage.get(searchKey.toString());
     }
 
     @Override
     protected boolean isExist(Object searchKey) {
-        return (int) searchKey >= 0;
+        return storage.containsKey(searchKey.toString());
     }
 
     @Override
     protected void saveResume(Resume r, Object searchKey) {
-        storage.add(r);
+        storage.put(searchKey.toString(), r);
     }
 
     @Override
@@ -58,6 +52,6 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(Resume r, Object searchKey) {
-        storage.set((int) searchKey, r);
+        storage.replace(searchKey.toString(), r);
     }
 }

@@ -23,12 +23,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size--;
     }
 
-    //К удалению, поскольку переходим на getAllSorted()
-    /*@Override
-    public Resume[] getAll() {
-        return Arrays.copyOf(storage, size);
-    }*/
-
     @Override
     protected Resume getResume(Object searchKey) {
         return storage[(int) searchKey];
