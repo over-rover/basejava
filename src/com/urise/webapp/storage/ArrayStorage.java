@@ -2,19 +2,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 public class ArrayStorage extends AbstractArrayStorage {
-    @Override
-    protected List<Resume> getAllSortedResumes() {
-        List<Resume> tempList = new ArrayList<>(Arrays.asList(storage).subList(0, super.size));
-        Collections.sort(tempList);
-        return tempList;
-    }
-
     @Override
     protected Object getKey(String uuid) {
         for (int i = 0; i < size; i++) {

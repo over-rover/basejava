@@ -2,18 +2,12 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.List;
 
 public class SortedArrayStorage extends AbstractArrayStorage {
-
-    @Override
-    protected List<Resume> getAllSortedResumes() {
-        List<Resume> tempList = new ArrayList<>(Arrays.asList(storage).subList(0, super.size));
-        return tempList;
-    }
+    private static final Comparator<Resume> BY_UUID_RESUME_COMPARATOR =
+            Comparator.comparing(Resume::getUuid);
 
     @Override
     protected Object getKey(String uuid) {
@@ -32,7 +26,4 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     protected void remove(int searchKey) {
         System.arraycopy(storage, searchKey + 1, storage, searchKey, size - 1 - searchKey);
     }
-
-    private static final Comparator<Resume> BY_UUID_RESUME_COMPARATOR =
-            (o1, o2) -> o1.getUuid().compareTo(o2.getUuid());
 }

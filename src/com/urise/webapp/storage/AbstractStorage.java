@@ -4,6 +4,7 @@ import com.urise.webapp.exception.ExistStorageException;
 import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
+import java.util.Collections;
 import java.util.List;
 
 public abstract class AbstractStorage implements Storage {
@@ -25,9 +26,16 @@ public abstract class AbstractStorage implements Storage {
         return getResume(searchKey);
     }
 
+    // переделал под шаблонный метод. Конечно, уменьшил код на десяток строк, но при этом
+    // сортирую List, полученный из SortedArray (масло маслом мажу). Ресурсы транжирим.
+    // Но, видимо, есть какой-то смысл.
+    // В тестах, например, теперь можно не париться с тем, что при инициализации SortedArray storage,
+    // он должен быть отсортирован, а все остальные реализации должны быть проинициализированы в произвольном порядке.
     @Override
     public List<Resume> getAllSorted() {
-        return getAllSortedResumes();
+        List<Resume> tempList = createListFromStorage();
+        Collections.sort(tempList);
+        return tempList;
     }
 
     @Override
@@ -54,7 +62,7 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract Resume getResume(Object searchKey);
 
-    protected abstract List<Resume> getAllSortedResumes();
+    protected abstract List<Resume> createListFromStorage();
 
     protected abstract boolean isExist(Object searchKey);
 

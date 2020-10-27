@@ -1,7 +1,3 @@
-import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.MapStorageUUID;
-import com.urise.webapp.storage.Storage;
-
 public class MainTestArrayStorage {
     // Класс к удалению,, так как для тестирования используются тестовые классы.
     // Но рука не поднимается удалять. Вдруг пригодится еще. потом удалю.

@@ -24,6 +24,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
+    protected List<Resume> createListFromStorage() {
+        return new ArrayList<>(Arrays.asList(storage).subList(0, size));
+    }
+
+    @Override
     protected Resume getResume(Object searchKey) {
         return storage[(int) searchKey];
     }

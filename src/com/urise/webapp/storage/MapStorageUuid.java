@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public class MapStorageUUID extends AbstractStorage {
+public class MapStorageUuid extends AbstractStorage {
     private Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -18,11 +18,8 @@ public class MapStorageUUID extends AbstractStorage {
         storage.remove(searchKey.toString());
     }
 
-    @Override
-    protected List<Resume> getAllSortedResumes() {
-        List<Resume> tempList = new ArrayList<>(storage.values());
-        Collections.sort(tempList);
-        return tempList;
+    protected List<Resume> createListFromStorage() {
+        return new ArrayList<>(storage.values());
     }
 
     @Override

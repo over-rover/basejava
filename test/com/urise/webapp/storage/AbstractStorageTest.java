@@ -18,14 +18,9 @@ public abstract class AbstractStorageTest {
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
     private static final String UUID_4 = "uuid4";
-    private String fullName1 = "Aaaa";
-    private String fullName2 = "Bbbb";
-    private String fullName3 = "Cccc";
-    private String fullName4 = "Dddd";
-
-    private Resume r1 = new Resume(UUID_1, fullName1);
-    private Resume r2 = new Resume(UUID_2, fullName2);
-    private Resume r3 = new Resume(UUID_3, fullName3);
+    private Resume r1 = new Resume(UUID_1, "Aaaa");
+    private Resume r2 = new Resume(UUID_2, "Bbbb");
+    private Resume r3 = new Resume(UUID_3, "Cccc");
     private int initSize;
 
     protected AbstractStorageTest(Storage storage) {
@@ -36,14 +31,14 @@ public abstract class AbstractStorageTest {
     public void setUp() {
         storage.clear();
         storage.save(r1);
-        storage.save(r2);
         storage.save(r3);
+        storage.save(r2);
         initSize = 3;
     }
 
     @Test
     public void saveTest() {
-        Resume r4 = new Resume(UUID_4, fullName4);
+        Resume r4 = new Resume(UUID_4, "Dddd");
         storage.save(r4);
         assertSize(initSize + 1);
         assertGet(r4);
@@ -58,7 +53,7 @@ public abstract class AbstractStorageTest {
     public void updateTest() {
         r3 = new Resume(r3.getUuid(), "fullNameUpdated");
         storage.update(r3);
-        assertEquals(storage.get(UUID_3), r3);
+        assertGet(r3);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -81,10 +76,6 @@ public abstract class AbstractStorageTest {
     @Test
     public void getALLSortedTest() {
         List<Resume> expectedResumes = Arrays.asList(r1, r2, r3);
-        storage.clear();
-        storage.save(r1);
-        storage.save(r3);
-        storage.save(r2);
         assertEquals(expectedResumes, storage.getAllSorted());
     }
 
