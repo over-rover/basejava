@@ -5,7 +5,7 @@ import com.urise.webapp.model.Resume;
 
 import java.util.*;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size; // полезный размер массива
@@ -17,8 +17,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void deleteResume(Object searchKey) {
-        remove((int) searchKey);
+    public void deleteResume(Integer searchKey) {
+        remove(searchKey);
         storage[size - 1] = null;
         size--;
     }
@@ -29,20 +29,20 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return storage[(int) searchKey];
+    protected Resume getResume(Integer searchKey) {
+        return storage[searchKey];
     }
 
-    protected boolean isExist(Object searchKey) {
-        return (int) searchKey >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override
-    protected void saveResume(Resume r, Object searchKey) {
+    protected void saveResume(Resume r, Integer searchKey) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("storage[] overflow!", r.getUuid());
         }
-        insert(r, (int) searchKey);
+        insert(r, searchKey);
         size++;
     }
 
@@ -52,11 +52,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(Resume r, Object searchKey) {
-        storage[(int) searchKey] = r;
+    protected void updateResume(Resume r, Integer searchKey) {
+        storage[searchKey] = r;
     }
 
-    protected abstract void insert(Resume r, int searchKey);
+    protected abstract void insert(Resume r, Integer searchKey);
 
-    protected abstract void remove(int searchKey);
+    protected abstract void remove(Integer searchKey);
 }
