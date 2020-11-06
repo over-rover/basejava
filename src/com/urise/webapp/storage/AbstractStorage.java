@@ -6,33 +6,35 @@ import com.urise.webapp.model.Resume;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 
 public abstract class AbstractStorage<SK> implements Storage {
+    private static final Logger LOG = Logger.getLogger(AbstractStorage.class.getName());
+
     @Override
     public void save(Resume r) {
+        LOG.info("Save " + r);
         SK searchKey = getKeyIfResumeNotExist(r.getUuid());
         saveResume(r, searchKey);
     }
 
     @Override
     public void update(Resume r) {
+        LOG.info("Update " + r);
         SK searchKey = getKeyIfResumeExist(r.getUuid());
         updateResume(r, searchKey);
     }
 
     @Override
     public Resume get(String uuid) {
+        LOG.info("Get " + uuid);
         SK searchKey = getKeyIfResumeExist(uuid);
         return getResume(searchKey);
     }
 
-    // переделал под шаблонный метод. Конечно, уменьшил код на десяток строк, но при этом
-    // сортирую List, полученный из SortedArray (масло маслом мажу). Ресурсы транжирим.
-    // Но, видимо, есть какой-то смысл.
-    // В тестах, например, теперь можно не париться с тем, что при инициализации SortedArray storage,
-    // он должен быть отсортирован, а все остальные реализации должны быть проинициализированы в произвольном порядке.
     @Override
     public List<Resume> getAllSorted() {
+        LOG.info("GetAllSorted");
         List<Resume> tempList = createListFromStorage();
         Collections.sort(tempList);
         return tempList;
@@ -40,6 +42,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     @Override
     public void delete(String uuid) {
+        LOG.info("Delete " + uuid);
         SK searchKey = getKeyIfResumeExist(uuid);
         deleteResume(searchKey);
     }
@@ -47,12 +50,14 @@ public abstract class AbstractStorage<SK> implements Storage {
     private SK getKeyIfResumeNotExist(String uuid) {
         SK searchKey = getKey(uuid);
         if (!isExist(searchKey)) return searchKey;
+        LOG.warning("Resume " + uuid + " already exists");
         throw new ExistStorageException(uuid);
     }
 
     private SK getKeyIfResumeExist(String uuid) {
         SK searchKey = getKey(uuid);
         if (isExist(searchKey)) return searchKey;
+        LOG.warning("Resume " + uuid + " doesn't exist");
         throw new NotExistStorageException(uuid);
     }
 
