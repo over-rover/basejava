@@ -1,11 +1,13 @@
 package com.urise.webapp.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.time.YearMonth;
+import java.util.*;
 
 public class Resume implements Comparable<Resume> {
     private final String uuid;
     private String fullName;
+    private Map<ContactType, Link> contacts = new EnumMap<>(ContactType.class);
+    private Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -30,6 +32,22 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
+    public Map<ContactType, Link> getContacts() {
+        return contacts;
+    }
+
+    public void setContacts(ContactType contactType, Link link) {
+        contacts.put(contactType, link);
+    }
+
+    public Map<SectionType, AbstractSection> getSections() {
+        return sections;
+    }
+
+    public void setSections(SectionType sectionType, AbstractSection description) {
+        sections.put(sectionType, description);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -37,7 +55,10 @@ public class Resume implements Comparable<Resume> {
 
         Resume resume = (Resume) o;
 
-        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
+        if (!uuid.equals(resume.uuid)) return false;
+        if (!fullName.equals(resume.fullName)) return false;
+        if (!contacts.equals(resume.contacts)) return false;
+        return sections.equals(resume.sections);
     }
 
     @Override
@@ -48,7 +69,7 @@ public class Resume implements Comparable<Resume> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName);
+        return Objects.hash(uuid, fullName, sections);
     }
 
     @Override
