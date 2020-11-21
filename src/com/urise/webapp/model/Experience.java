@@ -1,42 +1,29 @@
 package com.urise.webapp.model;
 
 import java.time.YearMonth;
-import java.util.List;
 
-public class ExpEduDescription extends AbstractSection {
-    private List<ExpEduDescription> descriptions;
-    private Link organization;
+public class Experience extends AbstractSection {
+    private Link organizationLink;
     private YearMonth start;
     private YearMonth finish;
     private String position;
     private String duties;
 
-    public ExpEduDescription(String organizationName, String linkAddress, YearMonth start, YearMonth finish,
-                             String position, String duties) {
-        organization = new Link(organizationName, linkAddress);
+    public Experience(String organizationName, String url, YearMonth start, YearMonth finish,
+                      String position, String duties) {
+        organizationLink = new Link(organizationName, url);
         this.start = start;
         this.finish = finish;
         this.position = position;
         this.duties = duties;
     }
 
-    /*Пришлось сделать этот конструктор, чтобы из ResumeTestData можно было заполнить мапу:
-     * r.setSections(SectionType.EXPERIENCE, new ExpEduDescription(exp));
-     * r.setSections(SectionType.EDUCATION, new ExpEduDescription(edu));*/
-    public ExpEduDescription(List<ExpEduDescription> descriptions) {
-        this.descriptions = descriptions;
+    public Link getOrganizationLink() {
+        return organizationLink;
     }
 
-    public List<ExpEduDescription> getDescriptions() {
-        return descriptions;
-    }
-
-    public Link getOrganization() {
-        return organization;
-    }
-
-    public void setOrganization(Link organization) {
-        this.organization = organization;
+    public void setOrganizationLink(Link organizationLink) {
+        this.organizationLink = organizationLink;
     }
 
     public YearMonth getStart() {
@@ -76,9 +63,9 @@ public class ExpEduDescription extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ExpEduDescription object = (ExpEduDescription) o;
+        Experience object = (Experience) o;
 
-        if (!organization.equals(object.organization)) return false;
+        if (!organizationLink.equals(object.organizationLink)) return false;
         if (!start.equals(object.start)) return false;
         if (!finish.equals(object.finish)) return false;
         if (!position.equals(object.position)) return false;
@@ -87,7 +74,7 @@ public class ExpEduDescription extends AbstractSection {
 
     @Override
     public String toString() {
-        return getOrganization().getName() + "\n" + getStart() + " - " + getFinish() + "\n"
+        return getOrganizationLink().getName() + "\n" + getStart() + " - " + getFinish() + "\n"
                 + getPosition() + "\n" + getDuties();
     }
 }

@@ -2,10 +2,10 @@ package com.urise.webapp.model;
 
 import java.util.List;
 
-public class ListStringDescription extends AbstractSection {
+public class BulletedListSection extends AbstractSection {
     private List<String> descriptions;
 
-    public ListStringDescription(List<String> descriptions) {
+    public BulletedListSection(List<String> descriptions) {
         this.descriptions = descriptions;
     }
 
@@ -22,7 +22,7 @@ public class ListStringDescription extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ListStringDescription object = (ListStringDescription) o;
+        BulletedListSection object = (BulletedListSection) o;
 
         return descriptions.equals(object.descriptions);
     }

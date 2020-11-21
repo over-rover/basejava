@@ -2,11 +2,11 @@ package com.urise.webapp.model;
 
 public class Link {
     private String name;
-    private String linkAddress;
+    private String url;
 
-    public Link(String name, String linkAddress) {
+    public Link(String name, String url) {
         this.name = name;
-        this.linkAddress = linkAddress;
+        this.url = url;
     }
 
     public String getName() {
@@ -17,12 +17,12 @@ public class Link {
         this.name = name;
     }
 
-    public String getLinkAddress() {
-        return linkAddress;
+    public String getUrl() {
+        return url;
     }
 
-    public void setLinkAddress(String linkAddress) {
-        this.linkAddress = linkAddress;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -33,7 +33,7 @@ public class Link {
         Link link = (Link) o;
 
         if (!name.equals(link.name)) return false;
-        return linkAddress.equals(link.linkAddress);
+        return url.equals(link.url);
     }
 
     @Override

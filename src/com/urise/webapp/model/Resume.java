@@ -1,12 +1,11 @@
 package com.urise.webapp.model;
 
-import java.time.YearMonth;
 import java.util.*;
 
 public class Resume implements Comparable<Resume> {
     private final String uuid;
     private String fullName;
-    private Map<ContactType, Link> contacts = new EnumMap<>(ContactType.class);
+    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
     private Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
@@ -32,12 +31,12 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
-    public Map<ContactType, Link> getContacts() {
+    public Map<ContactType, String> getContacts() {
         return contacts;
     }
 
-    public void setContacts(ContactType contactType, Link link) {
-        contacts.put(contactType, link);
+    public void setContacts(ContactType contactType, String contactName) {
+        contacts.put(contactType, contactName);
     }
 
     public Map<SectionType, AbstractSection> getSections() {

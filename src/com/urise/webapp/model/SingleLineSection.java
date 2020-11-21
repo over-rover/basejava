@@ -1,9 +1,9 @@
 package com.urise.webapp.model;
 
-public class StringDescription extends AbstractSection {
+public class SingleLineSection extends AbstractSection {
     private String description;
 
-    public StringDescription(String description) {
+    public SingleLineSection(String description) {
         this.description = description;
     }
 
@@ -20,7 +20,7 @@ public class StringDescription extends AbstractSection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        StringDescription str = (StringDescription) o;
+        SingleLineSection str = (SingleLineSection) o;
         return description.equals(str.description);
     }
 }
