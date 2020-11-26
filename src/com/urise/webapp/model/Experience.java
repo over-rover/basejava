@@ -1,6 +1,7 @@
 package com.urise.webapp.model;
 
 import java.time.YearMonth;
+import java.util.Objects;
 
 public class Experience extends AbstractSection {
     private Link organizationLink;
@@ -11,6 +12,9 @@ public class Experience extends AbstractSection {
 
     public Experience(String organizationName, String url, YearMonth start, YearMonth finish,
                       String position, String duties) {
+        Objects.requireNonNull(start, "start must not be null");
+        Objects.requireNonNull(finish, "finish must not be null");
+        Objects.requireNonNull(position, "position must not be null");
         organizationLink = new Link(organizationName, url);
         this.start = start;
         this.finish = finish;
@@ -70,6 +74,11 @@ public class Experience extends AbstractSection {
         if (!finish.equals(object.finish)) return false;
         if (!position.equals(object.position)) return false;
         return duties.equals(object.duties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(organizationLink, start, finish, position, duties);
     }
 
     @Override

@@ -1,9 +1,12 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
+
 public class SingleLineSection extends AbstractSection {
-    private String description;
+    private final String description;
 
     public SingleLineSection(String description) {
+        Objects.requireNonNull(description, "description must not be null");
         this.description = description;
     }
 
@@ -11,9 +14,9 @@ public class SingleLineSection extends AbstractSection {
         return description;
     }
 
-    public void setDescription(String description) {
+    /*public void setDescription(String description) {
         this.description = description;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -22,5 +25,10 @@ public class SingleLineSection extends AbstractSection {
 
         SingleLineSection str = (SingleLineSection) o;
         return description.equals(str.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(description);
     }
 }

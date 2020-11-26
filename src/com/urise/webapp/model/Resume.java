@@ -4,9 +4,9 @@ import java.util.*;
 
 public class Resume implements Comparable<Resume> {
     private final String uuid;
-    private String fullName;
-    private Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
-    private Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
+    private final String fullName;
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    private final Map<SectionType, AbstractSection> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
@@ -27,9 +27,9 @@ public class Resume implements Comparable<Resume> {
         return fullName;
     }
 
-    public void setFullName(String fullName) {
+    /*public void setFullName(String fullName) {
         this.fullName = fullName;
-    }
+    }*/
 
     public Map<ContactType, String> getContacts() {
         return contacts;

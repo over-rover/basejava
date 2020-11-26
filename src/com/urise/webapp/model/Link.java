@@ -1,10 +1,13 @@
 package com.urise.webapp.model;
 
+import java.util.Objects;
+
 public class Link {
-    private String name;
-    private String url;
+    private final String name;
+    private final String url;
 
     public Link(String name, String url) {
+        Objects.requireNonNull(name, "name must not be null");
         this.name = name;
         this.url = url;
     }
@@ -13,17 +16,17 @@ public class Link {
         return name;
     }
 
-    public void setName(String name) {
+    /*public void setName(String name) {
         this.name = name;
-    }
+    }*/
 
     public String getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    /*public void setUrl(String url) {
         this.url = url;
-    }
+    }*/
 
     @Override
     public boolean equals(Object o) {
@@ -38,6 +41,6 @@ public class Link {
 
     @Override
     public String toString() {
-        return name;
+        return "Link(" + name + ',' + url + ')';
     }
 }
